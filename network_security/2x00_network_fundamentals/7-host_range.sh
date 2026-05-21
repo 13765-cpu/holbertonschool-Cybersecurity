@@ -1,2 +1,2 @@
 #!/bin/bash
-ipcalc -b $1/$2 | grep -E "HostMin|HostMax" | awk '{print $2}' | paste -sd ' - ' -
+IFS=. read -r a b c d <<< "$1"; mask=$((0xffffffff << (32 - $2))); net=$((((a<<24|b<<16|c<<8|d) & mask))); printf "%d.%d.%d.%d - %d.%d.%d.%d\n" $(( (net+1)>>24 & 255 )) $(( (net+1)>>16 & 255 )) $(( (net+1)>>8 & 255 )) $(( (net+1) & 255 )) $(( (net|(~mask & 0xffffffff))-1>>24 & 255 )) $(( (net|(~mask & 0xffffffff))-1>>16 & 255 )) $(( (net|(~mask & 0xffffffff))-1>>8 & 255 )) $(( (net|(~mask & 0xffffffff))-1 & 255 ))
