@@ -1,2 +1,2 @@
 #!/bin/bash
-bits=""; for i in {1..32}; do [ $i -le $1 ] && bits="${bits}1" || bits="${bits}0"; done; for i in 1 9 17 25; do echo "ibase=2; ${bits:$((i-1)):8}" | bc | tr '\n' '.'; done | sed 's/\.$/\n/'
+m=$(( 0xffffffff ^ ((1 << (32 - $1)) - 1) )); echo "$(( (m >> 24) & 255 )).$(( (m >> 16) & 255 )).$(( (m >> 8) & 255 )).$(( m & 255 ))"
